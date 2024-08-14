@@ -1,0 +1,32 @@
+services:
+  api:
+    build: ./
+    container_name: cookunity_api
+    ports:
+      - 3001:3001
+    environment:
+      - AUTO_RUN_MIGRATIONS=true
+      - DATABASE_URL=postgresql://postgres:postgres@cookunity_postgres_db/cookunity
+    volumes:
+      - /usr/app/node_modules
+    depends_on:
+      - postgres
+    command: npm start
+
+  postgres:
+    image: postgres:16.3-alpine
+    container_name: cookunity_postgres_db
+    ports:
+      - 5434:5434
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=cookunity
+      - POSTGRES_PORT=543
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    command: postgres -p 5434
+
+volumes:
+  postgres_data:
+    driver: 'local'

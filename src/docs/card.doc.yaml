@@ -1,0 +1,202 @@
+openapi: 3.0.0
+info:
+  title: Card API Documentation
+  version: 1.0.0
+  description: Documentation for the Card entity
+paths:
+  /cards:
+    get:
+      summary: Get all cards
+      tags:
+        - Cards
+      parameters:
+        - in: query
+          name: skip
+          schema:
+            type: integer
+            default: 0
+          description: Number of records to skip (pagination)
+        - in: query
+          name: take
+          schema:
+            type: integer
+            default: 10
+          description: Number of records to return (pagination)
+      responses:
+        '200':
+          description: A paginated list of cards
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cards:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Card'
+                  totalCount:
+                    type: integer
+                    description: Total number of cards available
+        '400':
+          description: Bad request, invalid query parameters
+    post:
+      summary: Create a new card
+      tags:
+        - Cards
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCardValidationSchema'
+      responses:
+        '200':
+          description: Card created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Card'
+  /cards/{id}:
+    get:
+      summary: Get a card by ID
+      tags:
+        - Cards
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The card ID
+      responses:
+        '200':
+          description: A single card
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Card'
+        '404':
+          description: Card not found
+    delete:
+      summary: Delete a card by ID
+      tags:
+        - Cards
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The card ID
+      responses:
+        '202':
+          description: Card deleted successfully
+        '404':
+          description: Card not found
+    patch:
+      summary: Update a card
+      tags:
+        - Cards
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCardValidationSchema'
+      responses:
+        '200':
+          description: Card updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Card'
+
+components:
+  schemas:
+    Card:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            - NORMAL
+            - FIRE
+            - WATER
+            - ELECTRIC
+            - GRASS
+            - ICE
+            - FIGHTING
+            - POISON
+            - GROUND
+            - FLYING
+            - BUG
+            - ROCK
+            - PSYCHIC
+            - GHOST
+            - DRAGOS
+            - DARK
+            - STEEL
+            - FAIRY
+        rarity:
+          type: string
+          enum:
+            - COMMON
+            - UNCOMMON
+            - RARE
+        hp:
+          type: number
+        weaknessType:
+          type: string
+        weaknessMultiplier:
+          type: number
+        resistanceType:
+          type: string
+        resistanceAmount:
+          type: number
+        ability:
+          type: string
+        attacks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attack'
+    CreateCardValidationSchema:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        rarity:
+          type: string
+        hp:
+          type: number
+        weaknessType:
+          type: string
+        weaknessMultiplier:
+          type: number
+        resistanceType:
+          type: string
+        resistanceAmount:
+          type: number
+        ability:
+          type: string
+        attacks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attack'
+    UpdateCardValidationSchema:
+      allOf:
+        - $ref: '#/components/schemas/CreateCardValidationSchema'
+    Attack:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        damage:
+          type: number
