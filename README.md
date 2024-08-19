@@ -12,10 +12,10 @@ Node.js and Docker needs to be installed.
 
 3. Next, also in the repo root directory run `npm run seed:db`, this will seed psql Database. **Warning: This will drop any data stored**.
 
-4. You can start using the API! You will find the swagger documentation on localhost:3001/api-docs
+4. You can start using the API! You will find the swagger documentation on `localhost:3001/api-docs`
 
 ## Technical Notes
 
-- The server is running on localhost port 3001.
+- The server is running on `localhost` port `3001`.
 
-- The database is running on localhost:5434
+- The database is running on `localhost:5434`
