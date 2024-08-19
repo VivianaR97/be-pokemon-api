@@ -1,8 +1,9 @@
+import swaggerUi from 'swagger-ui-express';
+import swaggerJsdoc from 'swagger-jsdoc';
 import express from 'express';
+import cors from 'cors';
 import { initDataSource } from './config/database';
 import router from './routes';
-import swaggerJsdoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
 import swaggerOptions from './config/swagger';
 
 const app = express();
@@ -15,6 +16,7 @@ async function init() {
 		// DB Initialization
 		initDataSource();
 
+		app.use(cors());
 		app.use(express.json());
 		app.use(router);
 		app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

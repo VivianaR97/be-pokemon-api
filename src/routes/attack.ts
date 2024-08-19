@@ -10,9 +10,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', getAttackValidator, async (req, res) => {
-	const attack = await AttackService.getAttack(req.params.id);
-	if (!attack) return res.status(404).send();
-	return res.status(200).send(attack);
+	return res.status(200).send(req.attack!);
 });
 
 router.post('/', createAttackValidator, async (req, res) => {
@@ -26,9 +24,6 @@ router.patch('/', updateAttackValidator, async (req, res) => {
 });
 
 router.delete('/:id', getAttackValidator, async (req, res) => {
-	const attack = await AttackService.getAttack(req.params.id);
-	if (!attack) return res.status(404).send();
-
 	await AttackService.deleteAttack(req.params.id);
 	return res.status(202).send();
 });

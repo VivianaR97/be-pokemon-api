@@ -1,19 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
 import { validateOrReject } from 'class-validator';
-import {
-	CreateAttackValidationSchema,
-	GetAttackValidationSchema,
-	UpdateAttackValidationSchema,
-} from '../dtos/attack.dto';
+import { CreateAttackValidationSchema, UpdateAttackValidationSchema } from '../dtos/attack.dto';
+import { AttackService } from '../services/attack';
 
 export const getAttackValidator = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		if (!req.params.id) return res.status(400).send();
 
-		const attack = new GetAttackValidationSchema();
-		attack.id = req.params.id;
-
-		await validateOrReject(attack);
+		const attack = await AttackService.getAttack(req.params.id);
+		req.attack = attack;
 
 		next();
 	} catch (e: any) {

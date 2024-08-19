@@ -32,12 +32,15 @@ export class Card extends BaseEntity {
 	resistanceAmount: number | null;
 
 	@Column({ type: 'varchar', nullable: true })
-	ability: string | null;
+	abilityName: string | null;
+
+	@Column({ type: 'varchar', nullable: true })
+	abilityDescription: string | null;
 
 	@Column()
 	retreatCost: number;
 
-	@ManyToMany(() => Attack, (attack) => attack.cards)
+	@ManyToMany(() => Attack, (attack) => attack.cards, { eager: true })
 	@JoinTable({ name: 'card_attack' })
 	attacks: Attack[];
 }

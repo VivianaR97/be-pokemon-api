@@ -13,12 +13,6 @@ import {
 } from 'class-validator';
 import { CardType, CardRarity } from '../model';
 
-export class GetCardValidationSchema {
-	@IsNotEmpty()
-	@IsUUID()
-	id: string;
-}
-
 export class CreateCardValidationSchema {
 	@IsNotEmpty()
 	@Length(1, 50)
@@ -58,7 +52,10 @@ export class CreateCardValidationSchema {
 	resistanceAmount: number | null;
 
 	@IsOptional()
-	ability: string | null;
+	abilityName: string | null;
+
+	@IsOptional()
+	abilityDescription: string | null;
 
 	@IsNumber()
 	@Min(1)

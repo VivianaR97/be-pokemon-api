@@ -1,6 +1,6 @@
 import Router from 'express';
-import { CardService } from '../services/card';
 import { createCardValidator, getCardValidator, updateCardValidator } from '../middlewares/card.validation';
+import { CardService } from '../services/card';
 
 const router = Router();
 
@@ -10,13 +10,18 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', getCardValidator, async (req, res) => {
-	const card = await CardService.getCard(req.params.id);
-	if (!card) return res.status(404).send();
-	return res.status(200).send(card);
+	const { card } = req;
+	return res.status(200).send(card!);
+});
+
+router.get('/:id/cardsToBattle', getCardValidator, async (req, res) => {
+	const cardsToBattle = await CardService.getCardsToBattle(req.card!.id);
+	if (!cardsToBattle) return res.status(404).send();
+	return res.status(200).send(cardsToBattle);
 });
 
 router.get('/:id/attributes', getCardValidator, async (req, res) => {
-	const card = await CardService.getCardAttributes(req.params.id);
+	const card = await CardService.getCardAttributes(req.card!);
 	if (!card) return res.status(404).send();
 	return res.status(200).send(card);
 });
@@ -32,10 +37,7 @@ router.patch('/', updateCardValidator, async (req, res) => {
 });
 
 router.delete('/:id', getCardValidator, async (req, res) => {
-	const card = await CardService.getCard(req.params.id);
-	if (!card) return res.status(404).send();
-
-	await CardService.deleteCard(req.params.id);
+	await CardService.deleteCard(req.card!.id);
 	return res.status(202).send();
 });
 

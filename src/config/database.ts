@@ -4,7 +4,6 @@ import path from 'path';
 export const dataSource = new DataSource({
 	type: 'postgres',
 	url: 'postgresql://postgres:postgres@postgres:5434/cookunity',
-	synchronize: true,
 	entities: [path.join(__dirname, '../entities/*.{ts,js}')],
 	migrationsRun: false,
 	logging: true,

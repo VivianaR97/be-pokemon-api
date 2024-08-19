@@ -1,10 +1,16 @@
-import { FindOptionsWhere, IsNull, Not, Or } from 'typeorm';
+import { FindOptionsWhere, ILike, Not } from 'typeorm';
 import { Card } from '../entities/card';
+import { CardType } from '../model';
 
 export const CardService = {
-	getAllCards: async (filters: { skip?: number; take?: number }) => {
-		const { skip = 0, take = 10 } = filters;
+	getAllCards: async (filters: { skip?: number; take?: number; type?: CardType; name?: string }) => {
+		const { skip = 0, take = 5, type, name } = filters;
+		const whereConditions = {
+			...(type && { type }),
+			...(name && { name: ILike(`%${name}%`) }),
+		};
 		const [cards, count] = await Card.findAndCount({
+			where: whereConditions,
 			order: { rarity: 'DESC' },
 			skip,
 			take,
@@ -21,10 +27,12 @@ export const CardService = {
 		return card;
 	},
 
-	getCardAttributes: async (id: string) => {
-		const card = await Card.findOneBy({ id });
-		if (!card) return null;
+	getCardsToBattle: async (id: string) => {
+		const cardsToBattle = await Card.find({ select: ['id', 'name'], where: { id: Not(id) } });
+		return cardsToBattle;
+	},
 
+	getCardAttributes: async (card: Card) => {
 		const whereConditions: FindOptionsWhere<Card>[] = [];
 		const { weaknessType, resistanceType } = card;
 		if (weaknessType) {
@@ -42,8 +50,6 @@ export const CardService = {
 		const cardsRelated = await Card.find({
 			where: whereConditions,
 		});
-
-		console.log(cardsRelated);
 
 		return {
 			card,

@@ -3,6 +3,74 @@ info:
   title: Card API Documentation
   version: 1.0.0
   description: Documentation for the Card entity
+servers:
+  - url: http://localhost:3001
+    description: Local server
+components:
+  schemas:
+    Card:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            - NORMAL
+            - FIRE
+            - WATER
+            - ELECTRIC
+            - GRASS
+            - ICE
+            - FIGHTING
+            - POISON
+            - GROUND
+            - FLYING
+            - BUG
+            - ROCK
+            - PSYCHIC
+            - GHOST
+            - DRAGOS
+            - DARK
+            - STEEL
+            - FAIRY
+        rarity:
+          type: string
+          enum:
+            - COMMON
+            - UNCOMMON
+            - RARE
+        hp:
+          type: number
+        weaknessType:
+          type: string
+        weaknessMultiplier:
+          type: number
+        resistanceType:
+          type: string
+        resistanceAmount:
+          type: number
+        abilityName:
+          type: string
+        abilityDescription:
+          type: string
+        retreatCost:
+          type: number
+        attacks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attack'
+    Attack:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        damage:
+          type: number
 paths:
   /cards:
     get:
@@ -48,7 +116,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateCardValidationSchema'
+              $ref: '#/components/schemas/Card'
       responses:
         '200':
           description: Card created successfully
@@ -102,7 +170,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateCardValidationSchema'
+              $ref: '#/components/schemas/Card'
       responses:
         '200':
           description: Card updated successfully
@@ -110,93 +178,3 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Card'
-
-components:
-  schemas:
-    Card:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-            - NORMAL
-            - FIRE
-            - WATER
-            - ELECTRIC
-            - GRASS
-            - ICE
-            - FIGHTING
-            - POISON
-            - GROUND
-            - FLYING
-            - BUG
-            - ROCK
-            - PSYCHIC
-            - GHOST
-            - DRAGOS
-            - DARK
-            - STEEL
-            - FAIRY
-        rarity:
-          type: string
-          enum:
-            - COMMON
-            - UNCOMMON
-            - RARE
-        hp:
-          type: number
-        weaknessType:
-          type: string
-        weaknessMultiplier:
-          type: number
-        resistanceType:
-          type: string
-        resistanceAmount:
-          type: number
-        ability:
-          type: string
-        attacks:
-          type: array
-          items:
-            $ref: '#/components/schemas/Attack'
-    CreateCardValidationSchema:
-      type: object
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-        rarity:
-          type: string
-        hp:
-          type: number
-        weaknessType:
-          type: string
-        weaknessMultiplier:
-          type: number
-        resistanceType:
-          type: string
-        resistanceAmount:
-          type: number
-        ability:
-          type: string
-        attacks:
-          type: array
-          items:
-            $ref: '#/components/schemas/Attack'
-    UpdateCardValidationSchema:
-      allOf:
-        - $ref: '#/components/schemas/CreateCardValidationSchema'
-    Attack:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        damage:
-          type: number

@@ -1,10 +1,11 @@
 import Router from 'express';
-import { CardService } from '../services/card';
+import { battleResultValidator } from '../middlewares/battle.validation';
+import { BattleService } from '../services/battle';
 
 const router = Router();
 
-router.get('/', async (req, res) => {
-	const cards = await CardService.getAllCards(req.query);
+router.post('/', battleResultValidator, async (req, res) => {
+	const cards = await BattleService.getResult(req.battle!);
 	return res.status(200).send(cards);
 });
 

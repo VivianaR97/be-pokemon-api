@@ -1,10 +1,4 @@
-import { Length, IsNotEmpty, IsOptional, IsNumber, Min, Max, IsUUID } from 'class-validator';
-
-export class GetAttackValidationSchema {
-	@IsNotEmpty()
-	@IsUUID()
-	id: string;
-}
+import { Length, IsNotEmpty, IsOptional, IsNumber, Min, Max } from 'class-validator';
 
 export class CreateAttackValidationSchema {
 	@IsNotEmpty()

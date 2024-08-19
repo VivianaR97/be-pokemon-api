@@ -11,8 +11,9 @@
 		"strict": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true
+		"forceConsistentCasingInFileNames": true,
+		"typeRoots": ["./node_modules/@types", "@types"]
 	},
-	"include": ["src/**/*", "@types/**/*", "scripts/database copy.ts"],
+	"include": ["src/**/*", "@types/**/*", "@types"],
 	"exclude": ["node_modules"]
 }
